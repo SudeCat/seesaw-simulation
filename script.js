@@ -63,4 +63,24 @@ function handlePlankClick(event) {
     
     console.log('Object created:', object);
 }
-
+function createObjectElement(object) {
+    // Create DOM element for the object
+    const objElement = document.createElement('div');
+    objElement.className = 'obj';
+    objElement.dataset.id = object.id;
+    
+    // Set color based on weight (heavier = darker)
+    const intensity = Math.floor((object.weight / 10) * 255);
+    objElement.style.backgroundColor = `rgb(${255 - intensity}, 100, 100)`;
+    
+    // Position the object on the plank
+    const positionPercent = ((object.position + PLANK_LENGTH / 2) / PLANK_LENGTH) * 100;
+    objElement.style.left = `${positionPercent}%`;
+    objElement.style.top = '50%';
+    
+    // Add weight label
+    objElement.innerHTML = `<span class="label">${object.weight}kg</span>`;
+    
+    // Add to objects layer
+    objectsLayer.appendChild(objElement);
+}
