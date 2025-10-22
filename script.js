@@ -73,6 +73,13 @@ function createObjectElement(object) {
     const intensity = Math.floor((object.weight / 10) * 255);
     objElement.style.backgroundColor = `rgb(${255 - intensity}, 100, 100)`;
     
+    // Set size based on weight (heavier = bigger circle)
+    const baseSize = 16; // base size from CSS
+    const sizeMultiplier = 0.5 + (object.weight / 10) * 1.5; // 0.5x to 2x size
+    const circleSize = baseSize * sizeMultiplier;
+    objElement.style.width = `${circleSize}px`;
+    objElement.style.height = `${circleSize}px`;
+    
     // Position the object on the plank
     const positionPercent = ((object.position + PLANK_LENGTH / 2) / PLANK_LENGTH) * 100;
     objElement.style.left = `${positionPercent}%`;
