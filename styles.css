@@ -1,0 +1,109 @@
+:root{
+    --width: 700px;       /* stage width */
+    --plank-length: 400px;
+    --plank-height: 18px;
+    --pivot-size: 30px;
+    --bg: #eef2f6;
+    --plank-color: #6b4f3f;
+    --pivot-color: #444;
+    --object-radius: 16px;
+  }
+  
+  *{box-sizing:border-box}
+  body{
+    background: var(--bg);
+    color:#233;
+    display:flex;
+    justify-content:center;
+    padding:25px;
+  }
+  .app{max-width:900px; width:100%}
+  header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
+  }
+  .controls{display:flex; gap:12px; align-items:center;}
+  .controls button{padding:6px 10px; border-radius:6px; border:1px solid #bbb; background:white; cursor:pointer;}
+  .controls .weights{display:flex; gap:12px; font-size:14px; align-items:center}
+  
+  .stage{
+    width:var(--width);
+    height:300px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.5), transparent 40%);
+    border-radius:8px;
+    position:relative;
+    margin: 0 auto 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    overflow:visible;
+  }
+  
+  /* center pivot */
+  .pivot{
+    width: var(--pivot-size);
+    height: var(--pivot-size);
+    background:var(--pivot-color);
+    border-radius:50%;
+    position:absolute;
+    left:50%;
+    bottom:44%;
+    transform:translateX(-50%);
+    z-index:40;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  }
+  
+  /* seesaw wrapper */
+  .seesaw-wrap{
+    position:absolute;
+    left:50%;
+    bottom:48%;
+    width:var(--plank-length);
+    transform-origin:50% 50%;
+    transform: translateX(-50%) rotate(0deg);
+    transition: transform 700ms cubic-bezier(.2,.9,.2,1);
+    z-index:30;
+    pointer-events:none;
+  }
+  
+  /* plank inside seesaw-wrap */
+  .plank{
+    width:100%;
+    height:var(--plank-height);
+    background:linear-gradient(180deg,#7c573f,#5a3e2f);
+    border-radius:10px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.17);
+    position:relative;
+    left:0;
+    pointer-events:auto; /* clickable */
+    cursor:pointer;
+  }
+  
+  /* layer where dropped objects appear */
+  .objects-layer{position:absolute; left:50%; bottom:48%; width:var(--plank-length); height:200px; transform:translateX(-50%); pointer-events:none; z-index:50}
+  
+  /* kilograms*/
+  .obj{
+    position:absolute;
+    width:var(--object-radius);
+    height:var(--object-radius);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    color:white;
+    user-select:none;
+    transform:translate(-50%, -50%);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  }
+  
+  .obj .label{position:absolute; top:calc(100% + 6px); left:50%; transform:translateX(-50%); font-size:11px; color:#333;}
+
+  
+  /* small responsive tweak */
+  @media (max-width:760px){
+    :root{ --width: 350px; --plank-length: 320px;}
+  }
+  
