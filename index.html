@@ -8,6 +8,28 @@
 </head>
 <body>
   <main class="app">
+    <header>
+      <h1>Seesaw Simulation</h1>
+      <div class="info-cards">
+        <div class="info-card">
+          <span class="label">LEFT WEIGHT:</span>
+          <span class="value" id="leftWeight"></span>
+        </div>
+        <div class="info-card">
+          <span class="label">NEXT WEIGHT:</span>
+          <span class="value" id="nextWeight"></span>
+        </div>
+        <div class="info-card">
+          <span class="label">RIGHT WEIGHT:</span>
+          <span class="value" id="rightWeight"></span>
+        </div>
+        <div class="info-card">
+          <span class="label">TILT ANGLE:</span>
+          <span class="value" id="tiltAngle"></span>
+        </div>
+      </div>
+    </header>
+
     <section class="stage">
       <div class="pivot"></div>
       <!-- container part-->
@@ -17,6 +39,21 @@
       <!-- dropped weights-->
       <div id="objectsLayer" class="objects-layer"></div>
     </section>
+
+    <div class="controls">
+      <button id="resetBtn" class="reset-btn">
+        <span class="icon">↻</span>
+        Reset Seesaw
+      </button>
+    </div>
+
+    <div class="logs-section">
+      <h3>Action Log</h3>
+      <div id="actionLog" class="action-log">
+      </div>
+    </div>
   </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
