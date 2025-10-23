@@ -56,27 +56,6 @@ seesaw-simulation/
 ### Core Concept
 The project started as a simple physics demonstration to show how torque affects balance. The key insight was that seesaw balance depends on both weight AND distance from the center, not just weight alone.
 
-### Design Decisions
-
-**1. Vanilla JavaScript Approach**
-- **Decision**: Used pure JavaScript instead of frameworks
-- **Reasoning**: Keep it lightweight and educational - no build process needed
-- **Trade-off**: More manual DOM manipulation, but better for learning
-
-**2. Real-time Physics Calculation**
-- **Decision**: Recalculate physics on every object placement
-- **Reasoning**: Immediate visual feedback helps users understand cause and effect
-- **Trade-off**: Slightly more CPU usage, but negligible for this scale
-
-**3. Dual Interaction Methods**
-- **Decision**: Allow clicking both seesaw and white area
-- **Reasoning**: More intuitive - users can click anywhere to drop objects
-- **Trade-off**: More complex event handling, but better UX
-
-**4. Visual Object Properties**
-- **Decision**: Size and color based on weight
-- **Reasoning**: Visual cues help users understand weight differences
-- **Trade-off**: More complex rendering, but better learning experience
 
 ### Technical Challenges
 
@@ -97,17 +76,10 @@ The project started as a simple physics demonstration to show how torque affects
 
 ## Trade-offs and Limitations
 
-### What We Sacrificed
-1. **Advanced Physics**: No momentum, friction, or complex dynamics
-2. **Mobile Optimization**: Touch interactions could be better
-3. **Accessibility**: Limited keyboard navigation and screen reader support
-4. **Performance**: No object pooling for many objects
-
 ### Current Limitations
 1. **Object Stacking**: Objects can overlap when placed close together
-2. **Reset Functionality**: No undo/redo for individual objects
-3. **Save System**: Only local storage, no cloud sync
-4. **Physics Scope**: Only handles static balance, not dynamic motion
+2. **Save System**: Only local storage, no cloud sync
+3. **Physics Scope**: Only handles static balance, not dynamic motion
 
 ### Future Improvements
 1. **Object Collision**: Prevent overlapping objects
@@ -117,25 +89,13 @@ The project started as a simple physics demonstration to show how torque affects
 
 ## AI Assistance
 
-### What Was AI-Assisted
+### Where I Used
 - **Initial Physics Logic**: AI helped structure the torque calculation formulas
 - **CSS Animation Keyframes**: AI suggested the drop animation structure
 - **Event Handling**: AI assisted with the dual click detection logic
 - **Debugging**: AI helped identify and fix the object positioning issues
 
-### What Was Manual
-- **Core Physics Understanding**: The fundamental torque concepts were manually implemented
-- **UI Design**: Layout and styling decisions were manual
-- **Testing and Iteration**: All testing and bug fixes were manual
-- **Project Structure**: File organization and architecture were manual
+## End of the README
 
-### AI Collaboration Process
-1. **Problem Definition**: I described the physics requirements
-2. **Code Generation**: AI provided initial implementation
-3. **Manual Review**: I tested and refined the code
-4. **Iterative Improvement**: AI helped with specific bug fixes
-5. **Final Polish**: Manual testing and optimization
-
-## License
-
-This project is open source and available under the MIT License.
+Feel free to explore each step in detail and get into the project workflow. If you have questions or suggestions, please open an issue or submit a pull request.
+- **Email:** [catsudeebrar@gmail.com](mail)
