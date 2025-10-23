@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seesaw Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .test-button { padding: 10px 15px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        .test-button:hover { background: #0056b3; }
+        .result { margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>Seesaw Simulation Test</h1>
+    
+    <div class="test-section">
+        <h3>Test 1: DOM Elements</h3>
+        <button class="test-button" onclick="testDOMElements()">Check DOM Elements</button>
+        <div id="dom-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 2: Object Creation</h3>
+        <button class="test-button" onclick="testObjectCreation()">Test Object Creation</button>
+        <div id="object-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 3: Physics Calculation</h3>
+        <button class="test-button" onclick="testPhysics()">Test Physics</button>
+        <div id="physics-result" class="result"></div>
+    </div>
+
+    <script>
+        function testDOMElements() {
+            const elements = {
+                plank: document.getElementById('plank'),
+                seesawWrap: document.getElementById('seesawWrap'),
+                objectsLayer: document.getElementById('objectsLayer'),
+                leftWeight: document.getElementById('leftWeight'),
+                rightWeight: document.getElementById('rightWeight'),
+                tiltAngle: document.getElementById('tiltAngle'),
+                nextWeight: document.getElementById('nextWeight'),
+                actionLog: document.getElementById('actionLog')
+            };
+            
+            let result = '<h4>DOM Element Check:</h4><ul>';
+            let allFound = true;
+            
+            for (const [name, element] of Object.entries(elements)) {
+                const found = element !== null;
+                allFound = allFound && found;
+                result += `<li>${name}: ${found ? '✓ Found' : '✗ Not Found'}</li>`;
+            }
+            
+            result += '</ul>';
+            result += `<p><strong>Overall: ${allFound ? '✓ All elements found' : '✗ Some elements missing'}</strong></p>`;
+            
+            document.getElementById('dom-result').innerHTML = result;
+        }
+        
+        function testObjectCreation() {
+            // Simulate object creation
+            const testObject = {
+                id: Date.now(),
+                weight: 5,
+                position: -100,
+                side: 'left'
+            };
+            
+            let result = '<h4>Object Creation Test:</h4>';
+            result += `<p>Test object: ${JSON.stringify(testObject)}</p>`;
+            
+            // Test torque calculation
+            const distance = Math.abs(testObject.position);
+            const torque = testObject.weight * distance;
+            result += `<p>Distance: ${distance}px, Torque: ${torque}</p>`;
+            
+            document.getElementById('object-result').innerHTML = result;
+        }
+        
+        function testPhysics() {
+            // Test physics with sample objects
+            const testObjects = [
+                { weight: 3, position: -150, side: 'left' },
+                { weight: 5, position: 100, side: 'right' }
+            ];
+            
+            let leftTorque = 0;
+            let rightTorque = 0;
+            
+            testObjects.forEach(obj => {
+                const distance = Math.abs(obj.position);
+                const torque = obj.weight * distance;
+                
+                if (obj.side === 'left') {
+                    leftTorque += torque;
+                } else {
+                    rightTorque += torque;
+                }
+            });
+            
+            const torqueDifference = rightTorque - leftTorque;
+            const angle = Math.max(-30, Math.min(30, torqueDifference / 10));
+            
+            let result = '<h4>Physics Test:</h4>';
+            result += `<p>Left Torque: ${leftTorque}</p>`;
+            result += `<p>Right Torque: ${rightTorque}</p>`;
+            result += `<p>Torque Difference: ${torqueDifference}</p>`;
+            result += `<p>Calculated Angle: ${angle.toFixed(1)}°</p>`;
+            
+            document.getElementById('physics-result').innerHTML = result;
+        }
+    </script>
+</body>
+</html>
