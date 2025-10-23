@@ -91,3 +91,28 @@ function createObjectElement(object) {
     // Add to objects layer
     objectsLayer.appendChild(objElement);
 }
+function updateSeesaw() {
+    let leftTorque = 0;
+    let rightTorque = 0;
+    
+    objects.forEach(obj => {
+        const distance = Math.abs(obj.position);
+        const torque = obj.weight * distance;
+        
+        if (obj.side === 'left') {
+            leftTorque += torque;
+        } else {
+            rightTorque += torque;
+        }
+    });
+    
+    // Calculating angle
+    const torqueDifference = rightTorque - leftTorque;
+    const angle = Math.max(-MAX_TILT, Math.min(MAX_TILT, torqueDifference / TILT_FACTOR));
+    
+    // Apply rotation to seesaw
+    seesawWrap.style.transform = `translateX(-50%) rotate(${angle}deg)`;
+    
+    console.log(`Torque - Left: ${leftTorque}, Right: ${rightTorque}, Angle: ${angle.toFixed(1)}°`);
+}
+
