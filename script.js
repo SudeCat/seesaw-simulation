@@ -151,3 +151,34 @@ function updateUI() {
     tiltAngleDisplay.textContent = `${angle.toFixed(1)}°`;
     nextWeightDisplay.textContent = `${nextWeight} kg`;
 }
+function addLogEntry(message) {
+    const logItem = document.createElement('div');
+    logItem.className = 'log-entry';
+    logItem.innerHTML = `<span class="log-icon"></span> ${message}`;
+    actionLog.prepend(logItem); // Add to the top
+    
+    // Keep only last 10 entries
+    while (actionLog.children.length > 10) {
+        actionLog.removeChild(actionLog.lastChild);
+    }
+}
+
+function resetSeesaw() {
+    console.log('Resetting seesaw');
+    
+    objects = [];
+    objectsLayer.innerHTML = '';
+
+    seesawWrap.style.transform = 'translateX(-50%) rotate(0deg)';
+    
+    // Generate new next weight
+    nextWeight = Math.floor(Math.random() * 10) + 1;
+    
+    // Clear action log
+    actionLog.innerHTML = '';
+    
+    updateUI();
+    addLogEntry('Seesaw reset!');
+    saveState();
+}
+
