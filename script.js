@@ -115,4 +115,39 @@ function updateSeesaw() {
     
     console.log(`Torque - Left: ${leftTorque}, Right: ${rightTorque}, Angle: ${angle.toFixed(1)}°`);
 }
-
+function updateUI() {
+    // Calculate total weights for both side
+    let leftWeight = 0;
+    let rightWeight = 0;
+    
+    objects.forEach(obj => {
+        if (obj.side === 'left') {
+            leftWeight += obj.weight;
+        } else {
+            rightWeight += obj.weight;
+        }
+    });
+    
+    let leftTorque = 0;
+    let rightTorque = 0;
+    
+    objects.forEach(obj => {
+        const distance = Math.abs(obj.position);
+        const torque = obj.weight * distance;
+        
+        if (obj.side === 'left') {
+            leftTorque += torque;
+        } else {
+            rightTorque += torque;
+        }
+    });
+    
+    const torqueDifference = rightTorque - leftTorque;
+    const angle = Math.max(-MAX_TILT, Math.min(MAX_TILT, torqueDifference / TILT_FACTOR));
+    
+    // Update info cards
+    leftWeightDisplay.textContent = `${leftWeight.toFixed(1)} kg`;
+    rightWeightDisplay.textContent = `${rightWeight.toFixed(1)} kg`;
+    tiltAngleDisplay.textContent = `${angle.toFixed(1)}°`;
+    nextWeightDisplay.textContent = `${nextWeight} kg`;
+}
