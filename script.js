@@ -44,6 +44,12 @@ document.addEventListener('DOMContentLoaded', function() {
     plank.addEventListener('click', handlePlankClick);
     resetBtn.addEventListener('click', resetSeesaw);
     
+    // Make the white stage area clickable for dropping objects
+    const stage = document.querySelector('.stage');
+    if (stage) {
+        stage.addEventListener('click', handleStageClick);
+    }
+    
     loadState();
     updateUI();
     // Set initial values
@@ -89,10 +95,54 @@ function handlePlankClick(event) {
     
     console.log('Object created:', object);
 }
+
+function handleStageClick(event) {
+    // Only handle clicks on the stage, not on the plank
+    if (event.target.classList.contains('plank') || event.target.classList.contains('seesaw-wrap')) {
+        return; // Let the plank handle its own clicks
+    }
+    
+    console.log('Stage clicked!');
+    if (isPaused) return;
+    
+    // Get click position relative to the stage
+    const stageRect = event.currentTarget.getBoundingClientRect();
+    const clickX = event.clientX - stageRect.left;
+    const stageCenter = stageRect.width / 2;
+    const positionFromCenter = clickX - stageCenter;
+    
+    const weight = nextWeight;
+    nextWeight = Math.floor(Math.random() * 10) + 1;
+    
+    console.log('Creating object with weight:', weight, 'position:', positionFromCenter);
+    
+    const object = {
+        id: Date.now() + Math.random(),
+        weight: weight,
+        position: positionFromCenter,
+        side: positionFromCenter < 0 ? 'left' : 'right'
+    };
+    
+    objects.push(object);
+    createObjectElement(object);
+
+    updateSeesaw();
+    updateUI();
+    
+    // Add to action log
+    addLogEntry(`${weight}kg dropped on ${object.side} side at ${Math.abs(positionFromCenter)}px from center`);
+    
+    console.log('Object added:', object);
+    console.log('Total objects:', objects.length);
+
+    saveState();
+    
+    console.log('Object created:', object);
+}
 function createObjectElement(object) {
     // Create DOM element for the object
     const objElement = document.createElement('div');
-    objElement.className = 'obj';
+    objElement.className = 'obj dropping'; // Add dropping class for animation
     objElement.dataset.id = object.id;
     
     // Set color based on weight (heavier = darker)
@@ -109,9 +159,9 @@ function createObjectElement(object) {
     // Position the object on the plank
     const positionPercent = ((object.position + PLANK_LENGTH / 2) / PLANK_LENGTH) * 100;
     objElement.style.left = `${positionPercent}%`;
-    objElement.style.top = '50%';
+    objElement.style.top = 'calc(50% - 9px)'; // Stick to seesaw surface
     
-    // Add weight label - FIX: Use textContent instead of innerHTML
+    // Add weight label
     const label = document.createElement('span');
     label.className = 'label';
     label.textContent = `${object.weight}kg`;
@@ -122,7 +172,13 @@ function createObjectElement(object) {
     
     // Add to objects layer
     objectsLayer.appendChild(objElement);
+    
+    // Remove the dropping class after animation completes
+    setTimeout(() => {
+        objElement.classList.remove('dropping');
+    }, 800); // Match the animation duration
 }
+
 function updateSeesaw() {
     if (!seesawWrap) {
         console.error('seesawWrap not found!');
@@ -136,6 +192,8 @@ function updateSeesaw() {
         const distance = Math.abs(obj.position);
         const torque = obj.weight * distance;
         
+        console.log(`Object: weight=${obj.weight}, position=${obj.position}, distance=${distance}, torque=${torque}, side=${obj.side}`);
+        
         if (obj.side === 'left') {
             leftTorque += torque;
         } else {
@@ -143,17 +201,19 @@ function updateSeesaw() {
         }
     });
     
-    // Calculating angle
+    // Calculating angle - if torques are equal, angle should be 0
     const torqueDifference = rightTorque - leftTorque;
     const angle = Math.max(-MAX_TILT, Math.min(MAX_TILT, torqueDifference / TILT_FACTOR));
+    
+    console.log(`Physics Check - Left Torque: ${leftTorque}, Right Torque: ${rightTorque}, Difference: ${torqueDifference}, Angle: ${angle.toFixed(1)}°`);
     
     // Apply rotation to seesaw
     seesawWrap.style.transform = `translateX(-50%) rotate(${angle}deg)`;
     
-    console.log(`Torque - Left: ${leftTorque}, Right: ${rightTorque}, Angle: ${angle.toFixed(1)}°`);
+    console.log(`Torque - Left: ${leftTorque}, Right: ${rightTorque}, Difference: ${torqueDifference}, Angle: ${angle.toFixed(1)}°`);
 }
 function updateUI() {
-    // Calculate total weights for both side
+    // Calculate total weights for both sides
     let leftWeight = 0;
     let rightWeight = 0;
     
@@ -165,6 +225,7 @@ function updateUI() {
         }
     });
     
+    // Calculate torques (same as updateSeesaw)
     let leftTorque = 0;
     let rightTorque = 0;
     
@@ -203,6 +264,8 @@ function updateUI() {
     } else {
         console.error('nextWeightDisplay is null!');
     }
+    
+    console.log(`UI Update - Left Weight: ${leftWeight}, Right Weight: ${rightWeight}, Left Torque: ${leftTorque}, Right Torque: ${rightTorque}, Angle: ${angle.toFixed(1)}°`);
 }
 function addLogEntry(message) {
     if (!actionLog) {
